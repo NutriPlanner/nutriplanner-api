@@ -22,6 +22,8 @@ const tokenSchema = mongoose.Schema(
     expires: {
       type: Date,
       required: true,
+      index: true,
+      expires: '1s',
     },
     blacklisted: {
       type: Boolean,

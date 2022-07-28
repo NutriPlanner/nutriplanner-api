@@ -86,6 +86,19 @@ const generateAuthTokens = async (user) => {
 };
 
 /**
+ * Get reset code
+ * @returns {string}
+ */
+const getResetCode = () => {
+  const chars = '0123456789BCDFGHJKLMNPQRSTVWXYZ';
+  let result = '';
+  for (let i = 0; i < 6; i += 1) {
+    result += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return result;
+};
+
+/**
  * Generate reset password token
  * @param {string} email
  * @returns {Promise<string>}
@@ -93,31 +106,42 @@ const generateAuthTokens = async (user) => {
 const generateResetPasswordToken = async (email) => {
   const user = await userService.getUserByEmail(email);
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
+    throw new ApiError({
+      statusCode: httpStatus.NOT_FOUND,
+      message: 'No users found with this email',
+      internalCode: 'AUTH__USER_NOT_FOUND',
+      data: { email },
+    });
   }
   const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
-  const resetPasswordToken = generateToken(user.id, expires, tokenTypes.RESET_PASSWORD);
-  await saveToken(resetPasswordToken, user.id, expires, tokenTypes.RESET_PASSWORD);
-  return resetPasswordToken;
+  const resetCode = getResetCode();
+  await saveToken(resetCode, user.id, expires, tokenTypes.RESET_PASSWORD);
+  return resetCode;
 };
 
 /**
- * Generate verify email token
- * @param {User} user
- * @returns {Promise<string>}
+ * Verify reset password token
+ * @param {string} resetPasswordToken
+ * @param {string} userId
  */
-const generateVerifyEmailToken = async (user) => {
-  const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
-  const verifyEmailToken = generateToken(user.id, expires, tokenTypes.VERIFY_EMAIL);
-  await saveToken(verifyEmailToken, user.id, expires, tokenTypes.VERIFY_EMAIL);
-  return verifyEmailToken;
+const verifyResetPasswordToken = async (resetPasswordToken, userId) => {
+  const tokenDoc = await Token.findOne({
+    token: resetPasswordToken,
+    type: tokenTypes.RESET_PASSWORD,
+    user: userId,
+    blacklisted: false,
+  });
+
+  if (!tokenDoc) {
+    throw new Error('Token not found');
+  }
 };
 
 module.exports = {
   generateToken,
   saveToken,
   verifyToken,
+  verifyResetPasswordToken,
   generateAuthTokens,
   generateResetPasswordToken,
-  generateVerifyEmailToken,
 };
