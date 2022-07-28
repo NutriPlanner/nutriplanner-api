@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const InternalCode = require('../utils/InternalCode');
 const tokenService = require('./token.service');
 const userService = require('./user.service');
 const Token = require('../models/token.model');
@@ -14,7 +15,12 @@ const { tokenTypes } = require('../config/tokens');
 const loginUserWithEmailAndPassword = async (email, password) => {
   const user = await userService.getUserByEmail(email);
   if (!user || !(await user.isPasswordMatch(password))) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+    throw new ApiError({
+      statusCode: httpStatus.UNAUTHORIZED,
+      internalCode: InternalCode.AUTH__INVALID_CREDENTIALS,
+      data: {},
+      message: 'Incorrect email or password',
+    });
   }
   return user;
 };
@@ -27,7 +33,7 @@ const loginUserWithEmailAndPassword = async (email, password) => {
 const logout = async (refreshToken) => {
   const refreshTokenDoc = await Token.findOne({ token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false });
   if (!refreshTokenDoc) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
+    throw new ApiError({ statusCode: httpStatus.NOT_FOUND, message: 'Not found' });
   }
   await refreshTokenDoc.remove();
 };
@@ -47,46 +53,34 @@ const refreshAuth = async (refreshToken) => {
     await refreshTokenDoc.remove();
     return tokenService.generateAuthTokens(user);
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
+    throw new ApiError({ statusCode: httpStatus.UNAUTHORIZED, message: 'Please authenticate' });
   }
 };
 
 /**
  * Reset password
- * @param {string} resetPasswordToken
- * @param {string} newPassword
+ * @param {string} email
+ * @param {string} code
+ * @param {string} password
  * @returns {Promise}
  */
-const resetPassword = async (resetPasswordToken, newPassword) => {
+const resetPassword = async ({ email, code, password }) => {
   try {
-    const resetPasswordTokenDoc = await tokenService.verifyToken(resetPasswordToken, tokenTypes.RESET_PASSWORD);
-    const user = await userService.getUserById(resetPasswordTokenDoc.user);
+    const user = await userService.getUserByEmail(email);
     if (!user) {
-      throw new Error();
+      throw new Error('User not found');
     }
-    await userService.updateUserById(user.id, { password: newPassword });
+
+    await tokenService.verifyResetPasswordToken(code, user.id);
+
+    await userService.updateUserById(user.id, { password });
     await Token.deleteMany({ user: user.id, type: tokenTypes.RESET_PASSWORD });
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Password reset failed');
-  }
-};
-
-/**
- * Verify email
- * @param {string} verifyEmailToken
- * @returns {Promise}
- */
-const verifyEmail = async (verifyEmailToken) => {
-  try {
-    const verifyEmailTokenDoc = await tokenService.verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
-    const user = await userService.getUserById(verifyEmailTokenDoc.user);
-    if (!user) {
-      throw new Error();
-    }
-    await Token.deleteMany({ user: user.id, type: tokenTypes.VERIFY_EMAIL });
-    await userService.updateUserById(user.id, { isEmailVerified: true });
-  } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Email verification failed');
+    throw new ApiError({
+      statusCode: httpStatus.UNAUTHORIZED,
+      message: 'Password reset failed',
+      internalCode: InternalCode.AUTH__PASSWORD_RESET_FAILED,
+    });
   }
 };
 
@@ -95,5 +89,4 @@ module.exports = {
   logout,
   refreshAuth,
   resetPassword,
-  verifyEmail,
 };
