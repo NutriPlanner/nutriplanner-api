@@ -4,11 +4,6 @@ const ApiError = require('../utils/ApiError');
 const { roleRights } = require('../config/roles');
 
 const verifyCallback = (req, resolve, reject, requiredRights) => async (err, user, info) => {
-  if (process.env.NODE_ENV === 'development') {
-    req.user = { _id: '62dc06216762d1f36ae6c1bf' };
-    resolve();
-  }
-
   if (err || info || !user) {
     return reject(new ApiError({ statusCode: httpStatus.UNAUTHORIZED, message: 'Please authenticate' }));
   }
