@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const catchAsync = require('../utils/catchAsync');
-const clientService = require('../services/client.service');
+const { clientService } = require('../services');
 
 const createClient = catchAsync(async (req, res) => {
   const client = await clientService.createClient({

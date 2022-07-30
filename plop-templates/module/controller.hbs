@@ -1,0 +1,36 @@
+const httpStatus = require('http-status');
+const pick = require('../utils/pick');
+const catchAsync = require('../utils/catchAsync');
+const { {{camelCase name}}Service } = require('../services');
+
+const create{{pascalCase name}} = catchAsync(async (req, res) => {
+  const {{camelCase name}} = await {{camelCase name}}Service.create{{pascalCase name}}({
+    ...req.body,
+    tenant: req.user._id,
+  });
+  res.status(httpStatus.CREATED).send({{camelCase name}});
+});
+
+const get{{pascalCase name}}Page = catchAsync(async (req, res) => {
+  const filter = req.query.filter || '{}';
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const result = await {{camelCase name}}Service.query{{pascalCase name}}Page(filter, options);
+  res.send(result);
+});
+
+const update{{pascalCase name}} = catchAsync(async (req, res) => {
+  const {{camelCase name}} = await {{camelCase name}}Service.update{{pascalCase name}}ById(req.params.{{camelCase name}}Id, req.body);
+  res.send({{camelCase name}});
+});
+
+const delete{{pascalCase name}} = catchAsync(async (req, res) => {
+  await {{camelCase name}}Service.delete{{pascalCase name}}ById(req.params.{{camelCase name}}Id);
+  res.status(httpStatus.NO_CONTENT).send();
+});
+
+module.exports = {
+  create{{pascalCase name}},
+  get{{pascalCase name}}Page,
+  update{{pascalCase name}},
+  delete{{pascalCase name}},
+};

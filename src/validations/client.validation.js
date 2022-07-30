@@ -10,7 +10,7 @@ const createClient = {
     birthday: Joi.string().required(),
     address: Joi.string().required(),
     phone: Joi.string().required(),
-    email: Joi.string().required().email(),
+    email: Joi.string().required(),
   }),
 };
 
@@ -35,7 +35,7 @@ const updateClient = {
     birthday: Joi.string().required(),
     address: Joi.string().required(),
     phone: Joi.string().required(),
-    email: Joi.string().required().email(),
+    email: Joi.string().required(),
   }),
 };
 

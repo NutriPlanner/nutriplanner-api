@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const InternalCode = require('../utils/InternalCode');
-const Client = require('../models/client.model');
+const { Client } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -47,15 +47,13 @@ const queryClients = async (filter, options) => {
  * @param {ObjectId} id
  * @returns {Promise<Client>}
  */
-const getClientById = async (id) => {
-  return Client.findById(id);
-};
+const getClientById = async (id) => Client.findById(id);
 
 /**
  * Update client by id
  * @param {ObjectId} clientId
  * @param {Object} updateBody
- * @returns {Promise<User>}
+ * @returns {Promise<Client>}
  */
 const updateClientById = async (clientId, updateBody) => {
   const client = await getClientById(clientId);
@@ -95,7 +93,7 @@ const updateClientById = async (clientId, updateBody) => {
 /**
  * Delete client by id
  * @param {ObjectId} clientId
- * @returns {Promise<User>}
+ * @returns {Promise<Client>}
  */
 const deleteClientById = async (clientId) => {
   const client = await getClientById(clientId);

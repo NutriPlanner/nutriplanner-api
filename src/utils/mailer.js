@@ -11,7 +11,7 @@ const createTransporter = async () => {
   const oAuth2Client = new google.auth.OAuth2(
     config.email.oauth.clientId,
     config.email.oauth.clientSecret,
-    config.email.oauth.redirectUrl
+    config.email.oauth.redirectUrl,
   );
   oAuth2Client.setCredentials({ refresh_token: config.email.oauth.refreshToken });
 

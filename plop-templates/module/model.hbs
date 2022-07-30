@@ -1,0 +1,27 @@
+const mongoose = require('mongoose');
+const { toJSON, paginate } = require('./plugins');
+
+const {{camelCase name}}Schema = mongoose.Schema(
+  {
+    tenant: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+      index: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+// add plugin that converts mongoose to json
+{{camelCase name}}Schema.plugin(toJSON);
+{{camelCase name}}Schema.plugin(paginate);
+
+/**
+ * @typedef {{pascalCase name}}
+ */
+const {{pascalCase name}} = mongoose.model('{{pascalCase name}}', {{camelCase name}}Schema);
+
+module.exports = {{pascalCase name}};

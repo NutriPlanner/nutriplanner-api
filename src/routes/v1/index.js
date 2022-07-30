@@ -1,4 +1,7 @@
 const express = require('express');
+
+// ROUTE IMPORT
+const trackingRoute = require('./tracking.route');
 const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const clientRoute = require('./client.route');
@@ -8,6 +11,12 @@ const config = require('../../config/config');
 const router = express.Router();
 
 const defaultRoutes = [
+  // ROUTE REGISTRATION
+  {
+    path: '/tracking',
+    route: trackingRoute,
+  },
+
   {
     path: '/auth',
     route: authRoute,
