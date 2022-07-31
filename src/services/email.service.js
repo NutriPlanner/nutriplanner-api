@@ -1,4 +1,4 @@
-const { sendMail } = require('../utils/mailer');
+const { sendMail } = require('../utils/mailer')
 
 /**
  * Send reset password email
@@ -7,11 +7,11 @@ const { sendMail } = require('../utils/mailer');
  * @returns {Promise}
  */
 const sendResetPasswordEmail = async (to, code) => {
-  const subject = 'Solicitud cambio de contraseña';
-  const text = `Código de autorización: ${code}`;
-  await sendMail({ to, subject, text });
-};
+    const subject = 'Solicitud cambio de contraseña'
+    const text = `Código de autorización: ${code}`
+    await sendMail( { to, subject, text } )
+}
 
 module.exports = {
-  sendResetPasswordEmail,
-};
+    sendResetPasswordEmail,
+}

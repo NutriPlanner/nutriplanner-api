@@ -1,7 +1,7 @@
-const httpStatus = require('http-status');
-const InternalCode = require('../utils/InternalCode');
-const Client = require('../models/client.model');
-const ApiError = require('../utils/ApiError');
+const httpStatus = require('http-status')
+const InternalCode = require('../utils/InternalCode')
+const { Client } = require('../models')
+const ApiError = require('../utils/ApiError')
 
 /**
  * Create a client
@@ -9,24 +9,25 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<Client>}
  */
 const createClient = async (clientBody) => {
-  if (await Client.isHerbaIdTaken(clientBody.herba_id)) {
-    throw new ApiError({
-      statusCode: httpStatus.BAD_REQUEST,
-      internalCode: InternalCode.GLOBAL__FIELD_ALREADY_TAKEN,
-      data: { field: 'herba_id' },
-      message: 'HerbaID already taken',
-    });
-  }
-  if (await Client.isRutTaken(clientBody.rut)) {
-    throw new ApiError({
-      statusCode: httpStatus.BAD_REQUEST,
-      internalCode: InternalCode.GLOBAL__FIELD_ALREADY_TAKEN,
-      data: { field: 'rut' },
-      message: 'Rut already taken',
-    });
-  }
-  return Client.create(clientBody);
-};
+    if (await Client.isHerbaIdTaken(clientBody.herba_id) ) {
+        throw new ApiError( {
+            statusCode   : httpStatus.BAD_REQUEST,
+            internalCode : InternalCode.GLOBAL__FIELD_ALREADY_TAKEN,
+            data         : { field: 'herba_id' },
+            message      : 'HerbaID already taken',
+        } )
+    }
+    if (await Client.isRutTaken(clientBody.rut) ) {
+        throw new ApiError( {
+            statusCode   : httpStatus.BAD_REQUEST,
+            internalCode : InternalCode.GLOBAL__FIELD_ALREADY_TAKEN,
+            data         : { field: 'rut' },
+            message      : 'Rut already taken',
+        } )
+    }
+
+    return Client.create(clientBody)
+}
 
 /**
  * Query for clients
@@ -38,83 +39,84 @@ const createClient = async (clientBody) => {
  * @returns {Promise<QueryResult>}
  */
 const queryClients = async (filter, options) => {
-  const clients = await Client.paginate(JSON.parse(filter), options);
-  return clients;
-};
+    const clients = await Client.paginate(JSON.parse(filter), options)
+
+    return clients
+}
 
 /**
  * Get client by id
  * @param {ObjectId} id
  * @returns {Promise<Client>}
  */
-const getClientById = async (id) => {
-  return Client.findById(id);
-};
+const getClientById = async (id) => Client.findById(id)
 
 /**
  * Update client by id
  * @param {ObjectId} clientId
  * @param {Object} updateBody
- * @returns {Promise<User>}
+ * @returns {Promise<Client>}
  */
 const updateClientById = async (clientId, updateBody) => {
-  const client = await getClientById(clientId);
-  if (!client) {
-    throw new ApiError({
-      statusCode: httpStatus.NOT_FOUND,
-      internalCode: InternalCode.CLIENT__UPDATE__NOT_FOUND,
-      data: { id: clientId },
-      message: 'Client not found',
-    });
-  }
+    const client = await getClientById(clientId)
+    if (!client) {
+        throw new ApiError( {
+            statusCode   : httpStatus.NOT_FOUND,
+            internalCode : InternalCode.CLIENT__UPDATE__NOT_FOUND,
+            data         : { id: clientId },
+            message      : 'Client not found',
+        } )
+    }
 
-  if (updateBody.herba_id && (await Client.isHerbaIdTaken(updateBody.herba_id, clientId))) {
-    throw new ApiError({
-      statusCode: httpStatus.BAD_REQUEST,
-      internalCode: InternalCode.GLOBAL__FIELD_ALREADY_TAKEN,
-      data: { field: 'herba_id' },
-      message: 'HerbaID already taken',
-    });
-  }
+    if (updateBody.herba_id && (await Client.isHerbaIdTaken(updateBody.herba_id, clientId) ) ) {
+        throw new ApiError( {
+            statusCode   : httpStatus.BAD_REQUEST,
+            internalCode : InternalCode.GLOBAL__FIELD_ALREADY_TAKEN,
+            data         : { field: 'herba_id' },
+            message      : 'HerbaID already taken',
+        } )
+    }
 
-  if (await Client.isRutTaken(updateBody.rut, clientId)) {
-    throw new ApiError({
-      statusCode: httpStatus.BAD_REQUEST,
-      internalCode: InternalCode.GLOBAL__FIELD_ALREADY_TAKEN,
-      data: { field: 'rut' },
-      message: 'Rut already taken',
-    });
-  }
+    if (await Client.isRutTaken(updateBody.rut, clientId) ) {
+        throw new ApiError( {
+            statusCode   : httpStatus.BAD_REQUEST,
+            internalCode : InternalCode.GLOBAL__FIELD_ALREADY_TAKEN,
+            data         : { field: 'rut' },
+            message      : 'Rut already taken',
+        } )
+    }
 
-  Object.assign(client, updateBody);
+    Object.assign(client, updateBody)
 
-  await client.save();
-  return client;
-};
+    await client.save()
+
+    return client
+}
 
 /**
  * Delete client by id
  * @param {ObjectId} clientId
- * @returns {Promise<User>}
+ * @returns {Promise<Client>}
  */
 const deleteClientById = async (clientId) => {
-  const client = await getClientById(clientId);
-  if (!client) {
-    throw new ApiError({
-      statusCode: httpStatus.NOT_FOUND,
-      internalCode: InternalCode.CLIENT__DELETE__NOT_FOUND,
-      data: { id: clientId },
-      message: 'Client not found',
-    });
-  }
-  await client.remove();
-  return client;
-};
+    const client = await getClientById(clientId)
+    if (!client) {
+        throw new ApiError( {
+            statusCode   : httpStatus.NOT_FOUND,
+            internalCode : InternalCode.CLIENT__DELETE__NOT_FOUND,
+            data         : { id: clientId },
+            message      : 'Client not found',
+        } )
+    }
+    await client.remove()
+
+    return client
+}
 
 module.exports = {
-  createClient,
-  queryClients,
-  getClientById,
-  updateClientById,
-  deleteClientById,
-};
+    createClient,
+    queryClients,
+    getClientById,
+    updateClientById,
+    deleteClientById,
+}
