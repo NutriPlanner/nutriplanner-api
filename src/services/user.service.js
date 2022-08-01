@@ -41,7 +41,7 @@ const getUserById = async (id) => User.findById(id)
  * @param {string} email
  * @returns {Promise<User>}
  */
-const getUserByEmail = async (email) => User.findOne( { email } )
+const getUserByEmail = async (email) => User.findOne( { email: email.toUpperCase() } )
 
 /**
  * Update user by id

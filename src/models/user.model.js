@@ -7,16 +7,17 @@ const { roles } = require('../config/roles')
 const userSchema = mongoose.Schema(
     {
         name: {
-            type     : String,
-            required : true,
-            trim     : true,
+            type      : String,
+            required  : true,
+            trim      : true,
+            uppercase : true,
         },
         email: {
             type      : String,
             required  : true,
             unique    : true,
             trim      : true,
-            lowercase : true,
+            uppercase : true,
             validate(value) {
                 if (!validator.isEmail(value) )
                     throw new Error('Invalid email')
