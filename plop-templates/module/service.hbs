@@ -1,0 +1,84 @@
+const httpStatus = require('http-status');
+const InternalCode = require('../utils/InternalCode');
+const { {{pascalCase name}} } = require('../models');
+const ApiError = require('../utils/ApiError');
+
+/**
+ * Create a {{camelCase name}}
+ * @param {Object} {{camelCase name}}Body
+ * @returns {Promise<{{pascalCase name}}>}
+ */
+const create{{pascalCase name}} = async ({{camelCase name}}Body) => {
+  return {{pascalCase name}}.create({{camelCase name}}Body);
+};
+
+/**
+ * Query for {{camelCase name}} page
+ * @param {Object} filter - Mongo filter
+ * @param {Object} options - Query options
+ * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
+ * @param {number} [options.limit] - Maximum number of results per page (default = 10)
+ * @param {number} [options.page] - Current page (default = 1)
+ * @returns {Promise<QueryResult>}
+ */
+const query{{pascalCase name}}Page = async (filter, options) => {
+  const {{camelCase name}}Page = await {{pascalCase name}}.paginate(JSON.parse(filter), options);
+  return {{camelCase name}}Page;
+};
+
+/**
+ * Get {{camelCase name}} by id
+ * @param {ObjectId} id
+ * @returns {Promise<{{pascalCase name}}>}
+ */
+const get{{pascalCase name}}ById = async (id) => {{pascalCase name}}.findById(id);
+
+/**
+ * Update {{camelCase name}} by id
+ * @param {ObjectId} {{camelCase name}}Id
+ * @param {Object} updateBody
+ * @returns {Promise<{{pascalCase name}}>}
+ */
+const update{{pascalCase name}}ById = async ({{camelCase name}}Id, updateBody) => {
+  const {{camelCase name}} = await get{{pascalCase name}}ById({{camelCase name}}Id);
+  if (!{{camelCase name}}) {
+    throw new ApiError({
+      statusCode: httpStatus.NOT_FOUND,
+      internalCode: InternalCode.{{constantCase name}}__UPDATE__NOT_FOUND,
+      data: { id: {{camelCase name}}Id },
+      message: '{{pascalCase name}} not found',
+    });
+  }
+
+  Object.assign({{camelCase name}}, updateBody);
+
+  await {{camelCase name}}.save();
+  return {{camelCase name}};
+};
+
+/**
+ * Delete {{camelCase name}} by id
+ * @param {ObjectId} {{camelCase name}}Id
+ * @returns {Promise<{{pascalCase name}}>}
+ */
+const delete{{pascalCase name}}ById = async ({{camelCase name}}Id) => {
+  const {{camelCase name}} = await get{{pascalCase name}}ById({{camelCase name}}Id);
+  if (!{{camelCase name}}) {
+    throw new ApiError({
+      statusCode: httpStatus.NOT_FOUND,
+      internalCode: InternalCode.{{constantCase name}}__DELETE__NOT_FOUND,
+      data: { id: {{camelCase name}}Id },
+      message: '{{pascalCase name}} not found',
+    });
+  }
+  await {{camelCase name}}.remove();
+  return {{camelCase name}};
+};
+
+module.exports = {
+  create{{pascalCase name}},
+  query{{pascalCase name}}Page,
+  get{{pascalCase name}}ById,
+  update{{pascalCase name}}ById,
+  delete{{pascalCase name}}ById,
+};

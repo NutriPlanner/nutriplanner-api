@@ -1,0 +1,19 @@
+const express = require('express');
+const auth = require('../../middlewares/auth');
+const validate = require('../../middlewares/validate');
+const {{camelCase name}}Validation = require('../../validations/{{camelCase name}}.validation');
+const {{camelCase name}}Controller = require('../../controllers/{{camelCase name}}.controller');
+
+const router = express.Router();
+
+router
+  .route('/')
+  .post(auth(), validate({{camelCase name}}Validation.create{{pascalCase name}}), {{camelCase name}}Controller.create{{pascalCase name}})
+  .get(auth(), validate({{camelCase name}}Validation.get{{pascalCase name}}Page), {{camelCase name}}Controller.get{{pascalCase name}}Page);
+
+router
+  .route('/:{{camelCase name}}Id')
+  .put(auth(), validate({{camelCase name}}Validation.update{{pascalCase name}}), {{camelCase name}}Controller.update{{pascalCase name}})
+  .delete(auth(), validate({{camelCase name}}Validation.delete{{pascalCase name}}), {{camelCase name}}Controller.delete{{pascalCase name}});
+
+module.exports = router;
