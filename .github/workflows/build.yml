@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.ENVIRONMENT }}
     env:
-      IMAGE_NAME: us.gcr.io/${{ secrets.GCP_PROJECT_ID }}/nutriplanner-api:${{ github.sha }}
+      IMAGE_NAME: us.gcr.io/${{ secrets.GCP_PROJECT_ID }}/nutriplanner-api
 
     steps:
       - name: Login
