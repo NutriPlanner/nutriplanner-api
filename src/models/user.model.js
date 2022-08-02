@@ -72,7 +72,7 @@ userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
  */
 userSchema.methods.isPasswordMatch = async function (password) {
     const user = this
-
+    
     return bcrypt.compare(password, user.password)
 }
 
