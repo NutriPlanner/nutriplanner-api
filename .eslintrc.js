@@ -7,17 +7,14 @@
 module.exports = {
     root : true,
     env  : {
-        node : true,
-        jest : true,
+        node: true,
     },
 
     extends: [
-        'plugin:jest/recommended',
         'plugin:security/recommended',
     ],
 
     plugins: [
-        'jest',
         'security',
     ],
 
