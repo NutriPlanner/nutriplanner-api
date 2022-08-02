@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  workflow_call:
+    inputs:
+      ENVIRONMENT:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    name: Cloud Run Image
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.ENVIRONMENT }}
+    env:
+      IMAGE_NAME: us.gcr.io/${{ secrets.GCP_PROJECT_ID }}/nutriplanner-api:${{ github.sha }}
+
+    steps:
+      - name: Login
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+          service_account_key: ${{ secrets.GCP_SA_CREDENTIALS }}
+
+      - name: Deploy Docker image
+        run: gcloud run deploy "nutriplanner-api-${{ inputs.ENVIRONMENT }}" --project ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --region us-central1 --platform managed

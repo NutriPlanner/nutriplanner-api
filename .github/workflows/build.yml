@@ -1,0 +1,44 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      ENVIRONMENT:
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Docker Image
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.ENVIRONMENT }}
+    env:
+      IMAGE_NAME: us.gcr.io/${{ secrets.GCP_PROJECT_ID }}/nutriplanner-api:${{ github.sha }}
+
+    steps:
+      - name: Login
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+          service_account_key: ${{ secrets.GCP_SA_CREDENTIALS }}
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker --quiet
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: |-
+          docker build \
+          -t $IMAGE_NAME \
+          --build-arg MONGODB_URL="${{ secrets.MONGODB_URL }}" \
+          --build-arg JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+          --build-arg SMTP_CLIENT_ID="${{ secrets.SMTP_CLIENT_ID }}" \
+          --build-arg SMTP_CLIENT_SECRET="${{ secrets.SMTP_CLIENT_SECRET }}" \
+          --build-arg SMTP_REFRESH_TOKEN="${{ secrets.SMTP_REFRESH_TOKEN }}" \
+          --build-arg SMTP_USERNAME="${{ secrets.SMTP_USERNAME }}" .
+
+      - name: Push Docker image
+        run: docker push $IMAGE_NAME

@@ -1,0 +1,27 @@
+name: CI/CD Pipeline - Production
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  ci:
+    name: CI
+    uses: ./.github/workflows/ci.yml
+
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
+    needs: ci
+    with:
+      ENVIRONMENT: production
+    secrets: inherit
+
+  deploy:
+    name: Deploy
+    uses: ./.github/workflows/deploy.yml
+    needs: build
+    with:
+      ENVIRONMENT: production
+    secrets: inherit

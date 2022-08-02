@@ -18,10 +18,10 @@ const envVarsSchema = Joi.object()
         JWT_VERIFY_EMAIL_EXPIRATION_MINUTES: Joi.number()
             .default(10)
             .description('minutes after which verify email token expires'),
-        SMTP_CLIENT_ID     : Joi.string().description('oauth2 client id for SMTP'),
-        SMTP_CLIENT_SECRET : Joi.string(),
-        SMTP_USERNAME      : Joi.string(),
-        SMTP_REFRESH_TOKEN : Joi.string(),
+        SMTP_CLIENT_ID     : Joi.string().required().description('oauth2 client id for SMTP'),
+        SMTP_CLIENT_SECRET : Joi.string().required(),
+        SMTP_USERNAME      : Joi.string().required(),
+        SMTP_REFRESH_TOKEN : Joi.string().required(),
     } )
     .unknown()
 
