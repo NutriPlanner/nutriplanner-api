@@ -34,14 +34,14 @@ const queryUsers = async (filter, options) => {
  * @param {ObjectId} id
  * @returns {Promise<User>}
  */
-const getUserById = async (id) => User.findById(id)
+const getUserById = async (id) => await User.findById(id)
 
 /**
  * Get user by email
  * @param {string} email
  * @returns {Promise<User>}
  */
-const getUserByEmail = async (email) => User.findOne( { email: email.toUpperCase() } )
+const getUserByEmail = async (email) => await User.findOne( { email: email.toUpperCase() } )
 
 /**
  * Update user by id
