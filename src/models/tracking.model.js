@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { tenantModel } = require('./utils/tenant')
 const { STATUS, STATUS_LIST } = require('../presets/tracking.preset')
 const { toJSON, paginate } = require('./plugins')
 
@@ -74,12 +75,6 @@ const trackingSchema = mongoose.Schema(
             ref      : 'Client',
             required : true,
         },
-        tenant: {
-            type     : mongoose.Schema.Types.ObjectId,
-            ref      : 'User',
-            required : true,
-            index    : true,
-        },
     },
     {
         timestamps: true,
@@ -96,9 +91,4 @@ trackingSchema.pre('save', async function (next) {
     next()
 } )
 
-/**
- * @typedef Tracking
- */
-const Tracking = mongoose.model('Tracking', trackingSchema)
-
-module.exports = Tracking
+module.exports = tenantModel('Tracking', trackingSchema)

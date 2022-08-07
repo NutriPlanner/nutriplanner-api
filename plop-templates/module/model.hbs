@@ -3,12 +3,6 @@ const { toJSON, paginate } = require('./plugins');
 
 const {{camelCase name}}Schema = mongoose.Schema(
   {
-    tenant: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-      index: true,
-    },
   },
   {
     timestamps: true,

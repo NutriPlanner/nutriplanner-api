@@ -4,10 +4,7 @@ const catchAsync = require('../utils/catchAsync')
 const { clientService } = require('../services')
 
 const createClient = catchAsync(async (req, res) => {
-    const client = await clientService.createClient( {
-        ...req.body,
-        tenant: req.user._id,
-    } )
+    const client = await clientService.createClient(req.body)
     res.status(httpStatus.CREATED).send(client)
 } )
 

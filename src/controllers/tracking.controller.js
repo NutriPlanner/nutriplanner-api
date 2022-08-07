@@ -4,10 +4,7 @@ const catchAsync = require('../utils/catchAsync')
 const { trackingService } = require('../services')
 
 const createTracking = catchAsync(async (req, res) => {
-    const tracking = await trackingService.createTracking( {
-        ...req.body,
-        tenant: req.user._id,
-    } )
+    const tracking = await trackingService.createTracking(req.body)
     res.status(httpStatus.CREATED).send(tracking)
 } )
 
