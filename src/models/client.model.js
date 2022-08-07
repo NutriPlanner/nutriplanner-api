@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 const { format: formatRut } = require('rut.js')
+const { tenantModel } = require('./utils/tenant')
 const { toJSON, paginate } = require('./plugins')
 
 const clientSchema = mongoose.Schema(
@@ -53,12 +54,6 @@ const clientSchema = mongoose.Schema(
                     throw new Error('Invalid email')
             },
         },
-        tenant: {
-            type     : mongoose.Schema.Types.ObjectId,
-            ref      : 'User',
-            required : true,
-            index    : true,
-        },
     },
     {
         timestamps: true,
@@ -102,9 +97,4 @@ clientSchema.pre('save', async function (next) {
     next()
 } )
 
-/**
- * @typedef Client
- */
-const Client = mongoose.model('Client', clientSchema)
-
-module.exports = Client
+module.exports = tenantModel('Client', clientSchema)

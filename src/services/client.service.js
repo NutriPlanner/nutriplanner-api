@@ -9,7 +9,7 @@ const ApiError = require('../utils/ApiError')
  * @returns {Promise<Client>}
  */
 const createClient = async (clientBody) => {
-    if (await Client.isHerbaIdTaken(clientBody.herba_id) ) {
+    if (await Client().isHerbaIdTaken(clientBody.herba_id) ) {
         throw new ApiError( {
             statusCode   : httpStatus.BAD_REQUEST,
             internalCode : InternalCode.GLOBAL__FIELD_ALREADY_TAKEN,
@@ -17,7 +17,7 @@ const createClient = async (clientBody) => {
             message      : 'HerbaID already taken',
         } )
     }
-    if (await Client.isRutTaken(clientBody.rut) ) {
+    if (await Client().isRutTaken(clientBody.rut) ) {
         throw new ApiError( {
             statusCode   : httpStatus.BAD_REQUEST,
             internalCode : InternalCode.GLOBAL__FIELD_ALREADY_TAKEN,
@@ -26,7 +26,7 @@ const createClient = async (clientBody) => {
         } )
     }
 
-    return Client.create(clientBody)
+    return Client().create(clientBody)
 }
 
 /**
@@ -39,7 +39,7 @@ const createClient = async (clientBody) => {
  * @returns {Promise<QueryResult>}
  */
 const queryClients = async (filter, options) => {
-    const clients = await Client.paginate(JSON.parse(filter), options)
+    const clients = await Client().paginate(JSON.parse(filter), options)
 
     return clients
 }
@@ -49,7 +49,7 @@ const queryClients = async (filter, options) => {
  * @param {ObjectId} id
  * @returns {Promise<Client>}
  */
-const getClientById = async (id) => Client.findById(id)
+const getClientById = async (id) => Client().findById(id)
 
 /**
  * Update client by id
@@ -68,7 +68,7 @@ const updateClientById = async (clientId, updateBody) => {
         } )
     }
 
-    if (updateBody.herba_id && (await Client.isHerbaIdTaken(updateBody.herba_id, clientId) ) ) {
+    if (updateBody.herba_id && (await Client().isHerbaIdTaken(updateBody.herba_id, clientId) ) ) {
         throw new ApiError( {
             statusCode   : httpStatus.BAD_REQUEST,
             internalCode : InternalCode.GLOBAL__FIELD_ALREADY_TAKEN,
@@ -77,7 +77,7 @@ const updateClientById = async (clientId, updateBody) => {
         } )
     }
 
-    if (await Client.isRutTaken(updateBody.rut, clientId) ) {
+    if (await Client().isRutTaken(updateBody.rut, clientId) ) {
         throw new ApiError( {
             statusCode   : httpStatus.BAD_REQUEST,
             internalCode : InternalCode.GLOBAL__FIELD_ALREADY_TAKEN,

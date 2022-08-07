@@ -2,9 +2,9 @@ const express = require('express')
 
 // ROUTE IMPORT
 const trackingRoute = require('./tracking.route')
-const authRoute = require('./auth.route')
-const userRoute = require('./user.route')
 const clientRoute = require('./client.route')
+const userRoute = require('./user.route')
+const authRoute = require('./auth.route')
 const docsRoute = require('./docs.route')
 const config = require('../../config/config')
 
@@ -16,18 +16,17 @@ const defaultRoutes = [
         path  : '/tracking',
         route : trackingRoute,
     },
-
     {
-        path  : '/auth',
-        route : authRoute,
+        path  : '/clients',
+        route : clientRoute,
     },
     {
         path  : '/users',
         route : userRoute,
     },
     {
-        path  : '/clients',
-        route : clientRoute,
+        path  : '/auth',
+        route : authRoute,
     },
 ]
 
