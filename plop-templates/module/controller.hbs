@@ -4,10 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 const { {{camelCase name}}Service } = require('../services');
 
 const create{{pascalCase name}} = catchAsync(async (req, res) => {
-  const {{camelCase name}} = await {{camelCase name}}Service.create{{pascalCase name}}({
-    ...req.body,
-    tenant: req.user._id,
-  });
+  const {{camelCase name}} = await {{camelCase name}}Service.create{{pascalCase name}}( req.body );
   res.status(httpStatus.CREATED).send({{camelCase name}});
 });
 

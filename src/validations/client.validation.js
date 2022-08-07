@@ -36,7 +36,7 @@ const updateClient = {
         address   : Joi.string().required(),
         phone     : Joi.string().required(),
         email     : Joi.string().required(),
-    } ),
+    } ).unknown(true),
 }
 
 const deleteClient = {

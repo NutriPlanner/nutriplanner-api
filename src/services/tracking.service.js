@@ -8,7 +8,7 @@ const ApiError = require('../utils/ApiError')
  * @param {Object} trackingBody
  * @returns {Promise<Tracking>}
  */
-const createTracking = async (trackingBody) => Tracking.create(trackingBody)
+const createTracking = async (trackingBody) => Tracking().create(trackingBody)
 
 /**
  * Query for tracking page
@@ -20,7 +20,7 @@ const createTracking = async (trackingBody) => Tracking.create(trackingBody)
  * @returns {Promise<QueryResult>}
  */
 const queryTrackingPage = async (filter, options) => {
-    const trackingPage = await Tracking.paginate(JSON.parse(filter), options)
+    const trackingPage = await Tracking().paginate(JSON.parse(filter), options)
 
     return trackingPage
 }
@@ -30,7 +30,7 @@ const queryTrackingPage = async (filter, options) => {
  * @param {ObjectId} id
  * @returns {Promise<Tracking>}
  */
-const getTrackingById = async (id) => Tracking.findById(id)
+const getTrackingById = async (id) => Tracking().findById(id)
 
 /**
  * Update tracking by id

@@ -51,7 +51,7 @@ const updateTracking = {
             Joi.string().allow(''),
             Joi.date(),
         ],
-    } ),
+    } ).unknown(true),
 }
 
 const deleteTracking = {
