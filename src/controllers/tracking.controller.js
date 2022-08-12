@@ -3,6 +3,11 @@ const pick = require('../utils/pick')
 const catchAsync = require('../utils/catchAsync')
 const { trackingService } = require('../services')
 
+const getTracking = catchAsync(async (req, res) => {
+    const result = await trackingService.getTrackingById(req.params.trackingId)
+    res.send(result)
+} )
+
 const createTracking = catchAsync(async (req, res) => {
     const tracking = await trackingService.createTracking(req.body)
     res.status(httpStatus.CREATED).send(tracking)
@@ -26,6 +31,7 @@ const deleteTracking = catchAsync(async (req, res) => {
 } )
 
 module.exports = {
+    getTracking,
     createTracking,
     getTrackingPage,
     updateTracking,

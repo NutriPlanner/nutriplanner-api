@@ -8,6 +8,11 @@ const createClient = catchAsync(async (req, res) => {
     res.status(httpStatus.CREATED).send(client)
 } )
 
+const getClient = catchAsync(async (req, res) => {
+    const result = await clientService.getClientById(req.params.clientId)
+    res.send(result)
+} )
+
 const getClients = catchAsync(async (req, res) => {
     const filter = req.query.filter || '{}'
     const options = pick(req.query, [ 'sortBy', 'limit', 'page' ] )
@@ -28,6 +33,7 @@ const deleteClient = catchAsync(async (req, res) => {
 module.exports = {
     createClient,
     getClients,
+    getClient,
     updateClient,
     deleteClient,
 }

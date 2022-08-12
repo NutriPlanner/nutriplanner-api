@@ -13,6 +13,7 @@ router
 
 router
     .route('/:clientId')
+    .get(auth(), validate(clientValidation.getClient), clientController.getClient)
     .put(auth(), validate(clientValidation.updateClient), clientController.updateClient)
     .delete(auth(), validate(clientValidation.deleteClient), clientController.deleteClient)
 

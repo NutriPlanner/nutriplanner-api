@@ -13,6 +13,7 @@ router
 
 router
     .route('/:trackingId')
+    .get(auth(), validate(trackingValidation.getTracking), trackingController.getTracking)
     .put(auth(), validate(trackingValidation.updateTracking), trackingController.updateTracking)
     .delete(auth(), validate(trackingValidation.deleteTracking), trackingController.deleteTracking)
 

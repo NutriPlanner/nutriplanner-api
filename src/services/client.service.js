@@ -68,7 +68,7 @@ const updateClientById = async (clientId, updateBody) => {
         } )
     }
 
-    if (updateBody.herba_id && (await Client().isHerbaIdTaken(updateBody.herba_id, clientId) ) ) {
+    if (await Client().isHerbaIdTaken(updateBody.herba_id, clientId) ) {
         throw new ApiError( {
             statusCode   : httpStatus.BAD_REQUEST,
             internalCode : InternalCode.GLOBAL__FIELD_ALREADY_TAKEN,
