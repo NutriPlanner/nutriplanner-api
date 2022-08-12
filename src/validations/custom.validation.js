@@ -18,7 +18,6 @@ const rut = (value, helper) => {
     if (!validateRut(value) )
         return helper.message('rut is not valid')
   
-
     return value
 }
 

@@ -23,6 +23,12 @@ const getClients = {
     } ),
 }
 
+const getClient = {
+    params: Joi.object().keys( {
+        clientId: Joi.string().custom(objectId),
+    } ),
+}
+
 const updateClient = {
     params: Joi.object().keys( {
         clientId: Joi.required().custom(objectId),
@@ -47,6 +53,7 @@ const deleteClient = {
 
 module.exports = {
     createClient,
+    getClient,
     getClients,
     updateClient,
     deleteClient,

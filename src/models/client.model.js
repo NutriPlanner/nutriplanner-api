@@ -26,7 +26,6 @@ const clientSchema = mongoose.Schema(
             type     : String,
             required : true,
             trim     : true,
-            unique   : true,
         },
         birthday: {
             type     : String,
@@ -60,18 +59,28 @@ const clientSchema = mongoose.Schema(
     },
 )
 
+// Plugins
+
 // add plugin that converts mongoose to json
 clientSchema.plugin(toJSON)
 clientSchema.plugin(paginate)
+
+
+// Indexes
+
+clientSchema.index( { rut: 1, tenant: 1 }, { unique: true } )
+
+
+// Statics
 
 /**
  * Check if HerbaID is taken
  * @param {string} herbaId - The client's herbaId
  * @returns {Promise<boolean>}
  */
-clientSchema.statics.isHerbaIdTaken = async function (herbaId, excludeClientId) {
+clientSchema.statics.isHerbaIdTaken = async function (herbaId, excludeId) {
     if (herbaId) {
-        const client = await this.findOne( { herba_id: herbaId, _id: { $ne: excludeClientId } } )
+        const client = await this.findOne( { herba_id: herbaId, _id: { $ne: excludeId } } )
 
         return !!client
     }
@@ -84,12 +93,15 @@ clientSchema.statics.isHerbaIdTaken = async function (herbaId, excludeClientId) 
  * @param {string} rut - The client's rut
  * @returns {Promise<boolean>}
  */
-clientSchema.statics.isRutTaken = async function (rut, excludeClientId) {
-    const client = await this.findOne( { rut, _id: { $ne: excludeClientId } } )
+clientSchema.statics.isRutTaken = async function (rut, excludeId) {
+    const client = await this.findOne( { rut, _id: { $ne: excludeId } } )
 
     return !!client
 }
 
+/**
+ * Format rut before save
+ */
 clientSchema.pre('save', async function (next) {
     const client = this
     client.rut = formatRut(client.rut, { dots: false } )

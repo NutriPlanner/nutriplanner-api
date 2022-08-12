@@ -2,6 +2,12 @@ const Joi = require('joi')
 const { objectId } = require('./custom.validation')
 const { STATUS_LIST } = require('../presets/tracking.preset')
 
+const getTracking = {
+    params: Joi.object().keys( {
+        trackingId: Joi.string().custom(objectId),
+    } ),
+}
+
 const createTracking = {
     body: Joi.object().keys( {
         measurement: Joi.object().keys( {
@@ -61,6 +67,7 @@ const deleteTracking = {
 }
 
 module.exports = {
+    getTracking,
     createTracking,
     getTrackingPage,
     updateTracking,

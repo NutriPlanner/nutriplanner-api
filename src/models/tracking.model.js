@@ -49,8 +49,12 @@ const measurementSchema = mongoose.Schema(
 
 const trackingSchema = mongoose.Schema(
     {
-        measurement : measurementSchema,
-        status      : {
+        measurement: {
+            type     : measurementSchema,
+            required : false,
+            default  : {},
+        },
+        status: {
             type     : String,
             required : false,
             enum     : [ ...STATUS_LIST() ],
@@ -74,6 +78,11 @@ const trackingSchema = mongoose.Schema(
             type     : mongoose.Schema.Types.ObjectId,
             ref      : 'Client',
             required : true,
+        },
+        goal: {
+            type     : mongoose.Schema.Types.ObjectId,
+            ref      : 'ClientGoal',
+            required : false,
         },
     },
     {
