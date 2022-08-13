@@ -1,7 +1,7 @@
 module.exports = {
     async up(db, client) {
         // check if the collection exists
-        const collection = null
+        let collection = null
         await db.listCollections( { name: 'clients' } )
             .next(function(err, coll) {
                 if (coll)
