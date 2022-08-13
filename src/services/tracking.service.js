@@ -1,7 +1,9 @@
+const moment = require('moment')
 const httpStatus = require('http-status')
 const InternalCode = require('../utils/InternalCode')
 const { Tracking } = require('../models')
 const ApiError = require('../utils/ApiError')
+const { STATUS } = require('../presets/tracking.preset')
 
 /**
  * Create a tracking
@@ -76,10 +78,41 @@ const deleteTrackingById = async (trackingId) => {
     return tracking
 }
 
+/**
+ * Generates new trackings for a client in base on the new extra sessions.
+ */
+const incrementTrackings = async ( { client, extraSessions, goal, startDate }, { session } ) => {
+    const lastTracking = await Tracking().findOne( { client, goal }, { date: 1 }, { sort: { date: -1 } } )
+    let lastTrackingDate = lastTracking ? moment.utc(lastTracking.date) : moment(startDate).utc()
+
+    const newTrackings = []
+    
+    extraSessions.forEach(extraSession => {
+        lastTrackingDate = lastTrackingDate.add(extraSession.start, 'days')
+
+        const newTracking = {
+            subject : extraSession.subject,
+            client,
+            goal,
+            date    : lastTrackingDate.toISOString(),
+        }
+
+        newTrackings.push(newTracking)
+    } )
+
+    await Tracking().insertMany(newTrackings, { session } )
+}
+
+const closeTrackings = async ( { goal, after }, { session } ) => {
+    return await Tracking().updateMany( { goal, date: { $gte: after }, status: STATUS.PENDING }, { status: STATUS.CLOSED } ).session(session)
+}
+
 module.exports = {
     createTracking,
     queryTrackingPage,
     getTrackingById,
     updateTrackingById,
     deleteTrackingById,
+    incrementTrackings,
+    closeTrackings,
 }

@@ -7,7 +7,7 @@ const auth = require('../../middlewares/auth')
 const router = express.Router()
 
 router.get('/user', auth(), authController.getUser)
-router.post('/register', auth('manageUsers'), validate(authValidation.register), authController.register)
+router.post('/register', auth( { requiredRights: [ 'manageUsers' ] } ), validate(authValidation.register), authController.register)
 router.post('/login', validate(authValidation.login), authController.login)
 router.post('/logout', validate(authValidation.logout), authController.logout)
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens)

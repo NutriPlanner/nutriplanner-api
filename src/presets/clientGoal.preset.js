@@ -1,7 +1,6 @@
 const STATUS = {
-    PENDING : 'PENDING',
-    DONE    : 'DONE',
-    CLOSED  : 'CLOSED',
+    COMPLETED  : 'COMPLETED',
+    INCOMPLETE : 'INCOMPLETE',
 }
 
 function STATUS_LIST() {

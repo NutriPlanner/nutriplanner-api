@@ -1,6 +1,8 @@
 const express = require('express')
 
 // ROUTE IMPORT
+const clientGoalRoute = require('./clientGoal.route')
+const planRoute = require('./plan.route')
 const trackingRoute = require('./tracking.route')
 const clientRoute = require('./client.route')
 const userRoute = require('./user.route')
@@ -13,7 +15,15 @@ const router = express.Router()
 const defaultRoutes = [
     // ROUTE REGISTRATION
     {
-        path  : '/tracking',
+        path  : '/clientGoals',
+        route : clientGoalRoute,
+    },
+    {
+        path  : '/plans',
+        route : planRoute,
+    },
+    {
+        path  : '/trackings',
         route : trackingRoute,
     },
     {

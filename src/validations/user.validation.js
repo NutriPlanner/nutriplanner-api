@@ -1,5 +1,6 @@
 const Joi = require('joi')
 const { password, objectId } = require('./custom.validation')
+const { licensees } = require('../config/licensees')
 
 const createUser = {
     body: Joi.object().keys( {
@@ -7,6 +8,7 @@ const createUser = {
         password : Joi.string().required().custom(password),
         name     : Joi.string().required(),
         role     : Joi.string().required().valid('user', 'admin'),
+        licensee : Joi.string().required().valid(...licensees),
     } ),
 }
 
@@ -35,6 +37,7 @@ const updateUser = {
             email    : Joi.string(),
             password : Joi.string().custom(password),
             name     : Joi.string(),
+            licensee : Joi.string().valid(...licensees),
         } )
         .min(1),
 }

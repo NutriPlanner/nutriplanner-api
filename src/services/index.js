@@ -1,4 +1,6 @@
 // SERVICE IMPORT
+module.exports.clientGoalService = require('./clientGoal.service')
+module.exports.planService = require('./plan.service')
 module.exports.trackingService = require('./tracking.service')
 module.exports.clientService = require('./client.service')
 module.exports.userService = require('./user.service')
