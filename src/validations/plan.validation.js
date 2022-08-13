@@ -15,7 +15,7 @@ const createPlan = {
             subject : Joi.string().required().trim(),
             start   : Joi.string().required().trim(),
         } ) ).required(),
-    } ),
+    } ).unknown(true),
 }
 
 const getPlanPage = {

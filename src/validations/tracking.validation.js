@@ -23,7 +23,7 @@ const createTracking = {
         client  : Joi.required().custom(objectId),
         subject : Joi.string().required(),
         note    : Joi.string().allow(''),
-    } ),
+    } ).unknown(true),
 }
 
 const getTrackingPage = {
