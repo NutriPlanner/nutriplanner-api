@@ -7,6 +7,9 @@ on:
         required: true
         type: string
 
+env:
+  NODE_ENV: production
+
 jobs:
   build:
     name: Docker Image
@@ -33,6 +36,7 @@ jobs:
         run: |-
           docker build \
           -t $IMAGE_NAME \
+          --build-arg NODE_ENV="$NODE_ENV" \
           --build-arg MONGODB_URL="${{ secrets.MONGODB_URL }}" \
           --build-arg JWT_SECRET="${{ secrets.JWT_SECRET }}" \
           --build-arg SMTP_CLIENT_ID="${{ secrets.SMTP_CLIENT_ID }}" \
