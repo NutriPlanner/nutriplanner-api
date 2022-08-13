@@ -3,6 +3,7 @@ const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const { toJSON, paginate } = require('./plugins')
 const { roles } = require('../config/roles')
+const { licensees, LICENSEE } = require('../config/licensees')
 
 const userSchema = mongoose.Schema(
     {
@@ -34,6 +35,11 @@ const userSchema = mongoose.Schema(
             type    : String,
             enum    : roles,
             default : 'user',
+        },
+        licensee: {
+            type    : String,
+            enum    : licensees,
+            default : LICENSEE.BASIC,
         },
         isEmailVerified: {
             type    : Boolean,
