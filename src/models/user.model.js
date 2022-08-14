@@ -20,7 +20,7 @@ const userSchema = mongoose.Schema(
             trim      : true,
             uppercase : true,
             validate(value) {
-                if (!validator.isEmail(value) )
+                if (!validator.isEmail(value))
                     throw new Error('Invalid email')
             },
         },
@@ -80,7 +80,7 @@ userSchema.methods.isPasswordMatch = async function (password) {
 
 userSchema.pre('save', async function (next) {
     const user = this
-    if (user.isModified('password') )
+    if (user.isModified('password'))
         user.password = await bcrypt.hash(user.password, 8)
   
     next()

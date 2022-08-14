@@ -1,4 +1,5 @@
 const httpStatus = require('http-status')
+const moment = require('moment')
 const pick = require('../utils/pick')
 const catchAsync = require('../utils/catchAsync')
 const { trackingService } = require('../services')
@@ -20,6 +21,13 @@ const getTrackingPage = catchAsync(async (req, res) => {
     res.send(result)
 } )
 
+const getPendingTrackingPage = catchAsync(async (req, res) => {
+    const  filter = req.query.filter || '{}'
+    const options = pick(req.query, [ 'sortBy', 'limit', 'page' ] )
+    const result = await trackingService.queryTrackingPage(filter, options)
+    res.send(result)
+} )
+
 const updateTracking = catchAsync(async (req, res) => {
     const tracking = await trackingService.updateTrackingById(req.params.trackingId, req.body)
     res.send(tracking)
@@ -34,6 +42,7 @@ module.exports = {
     getTracking,
     createTracking,
     getTrackingPage,
+    getPendingTrackingPage,
     updateTracking,
     deleteTracking,
 }

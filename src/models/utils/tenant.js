@@ -19,7 +19,7 @@ function tenantModel(name, schema, options) {
         const discriminatorName = `${Model.modelName}-${tenantId}`
         const existingDiscriminator = (Model.discriminators || {} )[discriminatorName]
 
-        return existingDiscriminator || Model.discriminator(discriminatorName, mongoose.Schema( {} ) )
+        return existingDiscriminator || Model.discriminator(discriminatorName, mongoose.Schema( {} ))
     }
 }
 

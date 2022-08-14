@@ -61,8 +61,9 @@ const trackingSchema = mongoose.Schema(
             default  : STATUS.PENDING,
         },
         date: {
-            type    : Date,
-            default : new Date(),
+            type     : Date,
+            required : true,
+            index    : true,
         },
         subject: {
             type     : String,
@@ -93,11 +94,5 @@ const trackingSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 trackingSchema.plugin(toJSON)
 trackingSchema.plugin(paginate)
-
-trackingSchema.pre('save', async function (next) {
-    const tracking = this
-    tracking.date = new Date()
-    next()
-} )
 
 module.exports = tenantModel('Tracking', trackingSchema)

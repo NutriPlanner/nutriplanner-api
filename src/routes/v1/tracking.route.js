@@ -14,7 +14,7 @@ router
 
 router
     .route('/pendings')
-    .get(auth( { licensee: LICENSEE.PRO } ), validate(trackingValidation.getTrackingPage), trackingController.getTrackingPage)
+    .get(auth( { licensee: LICENSEE.PRO } ), validate(trackingValidation.getTrackingPage), trackingController.getPendingTrackingPage)
 
 router
     .route('/:trackingId')

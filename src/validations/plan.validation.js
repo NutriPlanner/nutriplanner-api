@@ -14,8 +14,8 @@ const createPlan = {
         sessions    : Joi.array().items(Joi.object().keys( {
             subject : Joi.string().required().trim(),
             start   : Joi.string().required().trim(),
-        } ) ).required(),
-    } ),
+        } )).required(),
+    } ).unknown(true),
 }
 
 const getPlanPage = {
@@ -37,7 +37,7 @@ const updatePlan = {
         sessions    : Joi.array().items(Joi.object().keys( {
             subject : Joi.string().required().trim(),
             start   : Joi.string().required().trim(),
-        } ) ).required(),
+        } )).required(),
     } ).unknown(true),
 }
 

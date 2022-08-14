@@ -8,7 +8,7 @@ module.exports = (ns) => (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1]
         const payload = jwt.decode(token)
 
-        ns.run( () => {
+        ns.run(() => {
             ns.set('tenantId', payload.sub)
             next()
         } )
