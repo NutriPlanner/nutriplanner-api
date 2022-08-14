@@ -12,7 +12,7 @@ const LICENSEE = {
 }
 
 const licensees = Object.keys(allLicensees)
-const licenseeProps = new Map(Object.entries(allLicensees) )
+const licenseeProps = new Map(Object.entries(allLicensees))
 
 module.exports = {
     LICENSEE,

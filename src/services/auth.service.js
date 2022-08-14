@@ -13,8 +13,8 @@ const { tokenTypes } = require('../config/tokens')
  * @returns {Promise<User>}
  */
 const loginUserWithEmailAndPassword = async (email, password) => {
-    const user = await userService.getUserByEmail(email.toUpperCase() )
-    if (!user || !(await user.isPasswordMatch(password) ) ) {
+    const user = await userService.getUserByEmail(email.toUpperCase())
+    if (!user || !(await user.isPasswordMatch(password))) {
         throw new ApiError( {
             statusCode   : httpStatus.UNAUTHORIZED,
             internalCode : InternalCode.AUTH__INVALID_CREDENTIALS,

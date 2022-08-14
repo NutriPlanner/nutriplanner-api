@@ -48,13 +48,13 @@ const devRoutes = [
     },
 ]
 
-defaultRoutes.forEach( (route) => {
+defaultRoutes.forEach((route) => {
     router.use(route.path, route.route)
 } )
 
 /* istanbul ignore next */
 if (config.env === 'development') {
-    devRoutes.forEach( (route) => {
+    devRoutes.forEach((route) => {
         router.use(route.path, route.route)
     } )
 }

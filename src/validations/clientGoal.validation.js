@@ -20,19 +20,19 @@ const getClientGoalsPage = {
 const createClientGoal = {
     body: Joi.object().keys( {
         name       : Joi.string().required().trim(),
-        status     : Joi.string().required().valid(...STATUS_LIST() ),
+        status     : Joi.string().required().valid(...STATUS_LIST()),
         start_date : Joi.date().required(),
         tasks      : Joi.array().items(Joi.object().keys( {
             completed   : Joi.boolean().default(false),
             description : Joi.string().required().trim(),
-        } ) ),
+        } )),
         plan           : Joi.string().allow(null).custom(objectId),
         client         : Joi.string().required().custom(objectId),
         extra_sessions : Joi.array().items(Joi.object().keys( {
             subject : Joi.string().required().trim(),
             start   : Joi.string().required().trim(),
-        } ) ).required(),
-    } ),
+        } )).required(),
+    } ).unknown(true),
 }
 
 const updateClientGoal = {
@@ -41,19 +41,19 @@ const updateClientGoal = {
     } ),
     body: Joi.object().keys( {
         name       : Joi.string().required().trim(),
-        status     : Joi.string().required().valid(...STATUS_LIST() ),
+        status     : Joi.string().required().valid(...STATUS_LIST()),
         start_date : Joi.date().required(),
         tasks      : Joi.array().items(Joi.object().keys( {
             completed   : Joi.boolean().default(false),
             description : Joi.string().required().trim(),
-        } ) ),
-        plan           : Joi.string().allow(null).custom(objectId),
+        } )),
+        plan           : Joi.string().allow(null, ''),
         active         : Joi.boolean().default(false),
         client         : Joi.string().required().custom(objectId),
         extra_sessions : Joi.array().items(Joi.object().keys( {
             subject : Joi.string().required().trim(),
             start   : Joi.string().required().trim(),
-        } ) ).required(),
+        } )).required(),
     } ).unknown(true),
 }
 
