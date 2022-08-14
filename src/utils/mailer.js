@@ -15,8 +15,8 @@ const createTransporter = async () => {
     )
     oAuth2Client.setCredentials( { refresh_token: config.email.oauth.refreshToken } )
 
-    const accessToken = await new Promise( (resolve, reject) => {
-        oAuth2Client.getAccessToken( (err, token) => {
+    const accessToken = await new Promise((resolve, reject) => {
+        oAuth2Client.getAccessToken((err, token) => {
             if (err) reject()
             resolve(token)
         } )

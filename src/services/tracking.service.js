@@ -22,7 +22,7 @@ const createTracking = async (trackingBody) => Tracking().create(trackingBody)
  * @returns {Promise<QueryResult>}
  */
 const queryTrackingPage = async (filter, options) => {
-    const trackingPage = await Tracking().paginate(JSON.parse(filter), options)
+    const trackingPage = await Tracking().paginate(typeof filter === 'string' ? JSON.parse(filter) : filter, options)
 
     return trackingPage
 }

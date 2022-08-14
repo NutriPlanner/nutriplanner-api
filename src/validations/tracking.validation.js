@@ -19,9 +19,10 @@ const createTracking = {
             bottom    : Joi.string().allow(''),
             body_mass : Joi.string().allow(''),
         } ),
-        status  : Joi.string().valid(...STATUS_LIST() ),
+        status  : Joi.string().valid(...STATUS_LIST()),
         client  : Joi.required().custom(objectId),
         subject : Joi.string().required(),
+        date    : Joi.date().required(),
         note    : Joi.string().allow(''),
     } ).unknown(true),
 }
@@ -49,14 +50,11 @@ const updateTracking = {
             bottom    : Joi.string().allow(''),
             body_mass : Joi.string().allow(''),
         } ),
-        status  : Joi.string().valid(...STATUS_LIST() ),
+        status  : Joi.string().valid(...STATUS_LIST()),
         client  : Joi.required().custom(objectId),
         subject : Joi.string().required(),
         note    : Joi.string().allow(''),
-        date    : [
-            Joi.string().allow(''),
-            Joi.date(),
-        ],
+        date    : Joi.date().required(),
     } ).unknown(true),
 }
 

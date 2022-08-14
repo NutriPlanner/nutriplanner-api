@@ -1,4 +1,8 @@
+/* eslint-disable security/detect-object-injection */
 /* eslint-disable no-param-reassign */
+const mongoose = require('mongoose')
+const _ = require('lodash')
+const { isObjectId } = require('../../validations/custom.validation')
 
 const paginate = (schema) => {
     /**
@@ -23,9 +27,9 @@ const paginate = (schema) => {
         let sort = ''
         if (options.sortBy) {
             const sortingCriteria = []
-            options.sortBy.split(',').forEach( (sortOption) => {
+            options.sortBy.split(',').forEach((sortOption) => {
                 const [ key, order ] = sortOption.split(':')
-                sortingCriteria.push( (order === 'desc' ? '-' : '') + key)
+                sortingCriteria.push((order === 'desc' ? '-' : '') + key)
             } )
             sort = sortingCriteria.join(' ')
         }
@@ -37,23 +41,39 @@ const paginate = (schema) => {
         const page = options.page && parseInt(options.page, 10) > 0 ? parseInt(options.page, 10) : 1
         const skip = (page - 1) * limit
 
+        
+        // transform _id to ObjectId if it's a string
+        const idFieldIndex = _.get(filter, '$or') ? _.get(filter, '$or').findIndex((field) => field['_id'] ) : -1
+        if (idFieldIndex !== -1) {
+            const idField = _.get(filter, '$or')[idFieldIndex]
+
+            if (isObjectId(idField['_id'] )) {
+                if (typeof idField['_id'] === 'string')
+                    _.set(filter, '$or[' + idFieldIndex + ']._id', mongoose.Types.ObjectId(idField['_id'] ))
+            }
+            else {
+                filter['$or'].splice(idFieldIndex, 1)
+            }
+        }
+
+
         const countPromise = this.countDocuments(filter).exec()
         let docsPromise = this.find(filter).sort(sort).skip(skip).limit(limit)
 
         if (options.populate) {
-            options.populate.split(',').forEach( (populateOption) => {
+            options.populate.split(',').forEach((populateOption) => {
                 docsPromise = docsPromise.populate(
                     populateOption
                         .split('.')
                         .reverse()
-                        .reduce( (a, b) => ( { path: b, populate: a } ) ),
+                        .reduce((a, b) => ( { path: b, populate: a } )),
                 )
             } )
         }
 
         docsPromise = docsPromise.exec()
 
-        return Promise.all( [ countPromise, docsPromise ] ).then( (values) => {
+        return Promise.all( [ countPromise, docsPromise ] ).then((values) => {
             const [ totalResults, results ] = values
             const totalPages = Math.ceil(totalResults / limit)
             const result = {

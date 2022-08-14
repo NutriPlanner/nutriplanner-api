@@ -49,7 +49,7 @@ const clientSchema = mongoose.Schema(
             trim      : true,
             uppercase : true,
             validate(value) {
-                if (!validator.isEmail(value) )
+                if (!validator.isEmail(value))
                     throw new Error('Invalid email')
             },
         },
