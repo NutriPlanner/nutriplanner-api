@@ -68,8 +68,8 @@ clientGoalSchema.plugin(paginate)
  * Check if exists a client goal active
  * @returns {Promise<boolean>}
  */
-clientGoalSchema.statics.existsOneActive = async function () {
-    const clientGoal = await this.findOne( { active: true } )
+clientGoalSchema.statics.existsOneActive = async function (client) {
+    const clientGoal = await this.findOne( { client, active: true } )
 
     return !!clientGoal
 }

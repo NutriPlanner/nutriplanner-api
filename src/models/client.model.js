@@ -4,6 +4,8 @@ const { format: formatRut } = require('rut.js')
 const { tenantModel } = require('./utils/tenant')
 const { toJSON, paginate } = require('./plugins')
 
+const { ClientGoal, Tracking } = require('../models')
+
 const clientSchema = mongoose.Schema(
     {
         herba_id: {
@@ -107,6 +109,16 @@ clientSchema.pre('save', async function (next) {
     client.rut = formatRut(client.rut, { dots: false } )
 
     next()
+} )
+
+/**
+ * Remove in cascade.
+ */
+clientSchema.pre('remove', async function() {
+    return await Promise.all( [
+        ClientGoal().remove( { client: this._id } ).exec(),
+        Tracking().remove( { client: this._id } ).exec(),
+    ] )
 } )
 
 module.exports = tenantModel('Client', clientSchema)
