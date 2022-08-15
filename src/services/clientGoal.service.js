@@ -37,7 +37,7 @@ const queryClientGoalsPage = async (filter, options) => {
  * @returns {Promise<ClientGoal>}
  */
 const createClientGoal = async (data) => {
-    if (await ClientGoal().existsOneActive()) {
+    if (await ClientGoal().existsOneActive(data.client)) {
         throw new ApiError( {
             statusCode   : httpStatus.BAD_REQUEST,
             internalCode : InternalCode.CLIENT_GOAL__EXISTS_ONE_ACTIVE,
@@ -74,7 +74,7 @@ const createClientGoal = async (data) => {
         status     : data.status,
         start_date : moment(data.start_date).utc().toISOString(),
         tasks      : data.tasks,
-        plan       : plan.name,
+        plan       : plan ? plan.name : null,
         client     : data.client,
         active     : true,
     }], { session } )

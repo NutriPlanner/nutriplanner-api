@@ -23,7 +23,7 @@ const tokenSchema = mongoose.Schema(
             type     : Date,
             required : true,
             index    : true,
-            expires  : '1s',
+            expires  : '0s',
         },
         blacklisted: {
             type    : Boolean,
