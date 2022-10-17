@@ -27,6 +27,15 @@ const queryTrackingPage = async (filter, options) => {
     return trackingPage
 }
 
+const queryPendingTrackingPage = async (filter, options) => {
+    const filters = JSON.stringify( {
+        ...JSON.parse(filter),
+        status: STATUS.PENDING,
+    } )
+
+    return await queryTrackingPage(filters, options)
+}
+
 /**
  * Get tracking by id
  * @param {ObjectId} id
@@ -110,6 +119,7 @@ const closeTrackings = async ( { goal, after }, { session } ) => {
 module.exports = {
     createTracking,
     queryTrackingPage,
+    queryPendingTrackingPage,
     getTrackingById,
     updateTrackingById,
     deleteTrackingById,
