@@ -46,7 +46,7 @@ const updateClientGoal = {
         tasks      : Joi.array().items(Joi.object().keys( {
             completed   : Joi.boolean().default(false),
             description : Joi.string().required().trim(),
-        } )),
+        } ).unknown(true)),
         plan           : Joi.string().allow(null, ''),
         active         : Joi.boolean().default(false),
         client         : Joi.string().required().custom(objectId),
