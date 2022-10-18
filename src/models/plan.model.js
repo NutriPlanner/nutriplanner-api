@@ -14,7 +14,7 @@ const planSession = mongoose.Schema(
             required : true,
             trim     : true,
             validate(value) {
-                if (Number(value) < 1)
+                if (Number(value) < 0)
                     throw new Error('Start must be a positive number')
             },
         },

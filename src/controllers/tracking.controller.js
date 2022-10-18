@@ -24,7 +24,7 @@ const getTrackingPage = catchAsync(async (req, res) => {
 const getPendingTrackingPage = catchAsync(async (req, res) => {
     const  filter = req.query.filter || '{}'
     const options = pick(req.query, [ 'sortBy', 'limit', 'page' ] )
-    const result = await trackingService.queryTrackingPage(filter, options)
+    const result = await trackingService.queryPendingTrackingPage(filter, options)
     res.send(result)
 } )
 
