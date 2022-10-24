@@ -3,7 +3,6 @@ const { objectId, rut } = require('./custom.validation')
 
 const createClient = {
     body: Joi.object().keys( {
-        herba_id  : Joi.string().allow(''),
         name      : Joi.string().required(),
         last_name : Joi.string().required(),
         rut       : Joi.string().custom(rut).required(),
@@ -34,7 +33,6 @@ const updateClient = {
         clientId: Joi.required().custom(objectId),
     } ),
     body: Joi.object().keys( {
-        herba_id  : Joi.string().allow(''),
         name      : Joi.string().required(),
         last_name : Joi.string().required(),
         rut       : Joi.string().custom(rut).required(),

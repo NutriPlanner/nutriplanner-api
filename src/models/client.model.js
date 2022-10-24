@@ -8,10 +8,6 @@ const { ClientGoal, Tracking } = require('../models')
 
 const clientSchema = mongoose.Schema(
     {
-        herba_id: {
-            type     : String,
-            required : false,
-        },
         name: {
             type      : String,
             required  : true,
@@ -74,21 +70,6 @@ clientSchema.index( { rut: 1, tenant: 1 }, { unique: true } )
 
 
 // Statics
-
-/**
- * Check if HerbaID is taken
- * @param {string} herbaId - The client's herbaId
- * @returns {Promise<boolean>}
- */
-clientSchema.statics.isHerbaIdTaken = async function (herbaId, excludeId) {
-    if (herbaId) {
-        const client = await this.findOne( { herba_id: herbaId, _id: { $ne: excludeId } } )
-
-        return !!client
-    }
-
-    return false
-}
 
 /**
  * Check if rut is taken
