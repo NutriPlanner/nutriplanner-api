@@ -1,15 +1,15 @@
 const Joi = require('joi')
-const { objectId, rut } = require('./custom.validation')
+const { objectId } = require('./custom.validation')
 
 const createClient = {
     body: Joi.object().keys( {
         name      : Joi.string().required(),
         last_name : Joi.string().required(),
-        rut       : Joi.string().custom(rut).required(),
-        birthday  : Joi.string().required(),
-        address   : Joi.string().required(),
-        phone     : Joi.string().required(),
-        email     : Joi.string().required(),
+        dni       : Joi.string(),
+        birthday  : Joi.string(),
+        address   : Joi.string(),
+        phone     : Joi.string(),
+        email     : Joi.string(),
     } ).unknown(true),
 }
 
@@ -35,11 +35,11 @@ const updateClient = {
     body: Joi.object().keys( {
         name      : Joi.string().required(),
         last_name : Joi.string().required(),
-        rut       : Joi.string().custom(rut).required(),
-        birthday  : Joi.string().required(),
-        address   : Joi.string().required(),
-        phone     : Joi.string().required(),
-        email     : Joi.string().required(),
+        dni       : Joi.string(),
+        birthday  : Joi.string(),
+        address   : Joi.string(),
+        phone     : Joi.string(),
+        email     : Joi.string(),
     } ).unknown(true),
 }
 

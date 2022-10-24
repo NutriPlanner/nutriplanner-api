@@ -1,5 +1,3 @@
-const { validate: validateRut } = require('rut.js')
-
 const isObjectId = (value) => value.match(/^[0-9a-fA-F]{24}$/)
 
 const objectId = (value, helpers) => {
@@ -16,16 +14,8 @@ const password = (value, helpers) => {
     return value
 }
 
-const rut = (value, helper) => {
-    if (!validateRut(value))
-        return helper.message('rut is not valid')
-  
-    return value
-}
-
 module.exports = {
     isObjectId,
     objectId,
     password,
-    rut,
 }
