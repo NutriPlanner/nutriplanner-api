@@ -12,6 +12,15 @@ const verifyCallback = (req, resolve, reject, { requiredRights = [], licensee } 
 
     req.user = user
 
+    if (!user.isActivated) {
+        return reject(new ApiError( {
+            statusCode   : httpStatus.UNAUTHORIZED,
+            internalCode : InternalCode.AUTH__INACTIVE_ACCOUNT,
+            data         : {},
+            message      : 'User is inactive',
+        } ))
+    }
+
     if (requiredRights.length) {
         const userRights = roleRights.get(user.role)
         const hasRequiredRights = requiredRights.every((requiredRight) => userRights.includes(requiredRight))

@@ -14,12 +14,22 @@ const { tokenTypes } = require('../config/tokens')
  */
 const loginUserWithEmailAndPassword = async (email, password) => {
     const user = await userService.getUserByEmail(email.toUpperCase())
+
     if (!user || !(await user.isPasswordMatch(password))) {
         throw new ApiError( {
             statusCode   : httpStatus.UNAUTHORIZED,
             internalCode : InternalCode.AUTH__INVALID_CREDENTIALS,
             data         : {},
             message      : 'Incorrect email or password',
+        } )
+    }
+
+    if (!user.isActivated) {
+        throw new ApiError( {
+            statusCode   : httpStatus.UNAUTHORIZED,
+            internalCode : InternalCode.AUTH__INACTIVE_ACCOUNT,
+            data         : {},
+            message      : 'User is inactive',
         } )
     }
 
