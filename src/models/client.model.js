@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
-const { format: formatRut } = require('rut.js')
 const { tenantModel } = require('./utils/tenant')
 const { toJSON, paginate } = require('./plugins')
 
@@ -8,10 +7,6 @@ const { ClientGoal, Tracking } = require('../models')
 
 const clientSchema = mongoose.Schema(
     {
-        herba_id: {
-            type     : String,
-            required : false,
-        },
         name: {
             type      : String,
             required  : true,
@@ -24,7 +19,7 @@ const clientSchema = mongoose.Schema(
             trim      : true,
             uppercase : true,
         },
-        rut: {
+        dni: {
             type     : String,
             required : true,
             trim     : true,
@@ -67,49 +62,6 @@ const clientSchema = mongoose.Schema(
 clientSchema.plugin(toJSON)
 clientSchema.plugin(paginate)
 
-
-// Indexes
-
-clientSchema.index( { rut: 1, tenant: 1 }, { unique: true } )
-
-
-// Statics
-
-/**
- * Check if HerbaID is taken
- * @param {string} herbaId - The client's herbaId
- * @returns {Promise<boolean>}
- */
-clientSchema.statics.isHerbaIdTaken = async function (herbaId, excludeId) {
-    if (herbaId) {
-        const client = await this.findOne( { herba_id: herbaId, _id: { $ne: excludeId } } )
-
-        return !!client
-    }
-
-    return false
-}
-
-/**
- * Check if rut is taken
- * @param {string} rut - The client's rut
- * @returns {Promise<boolean>}
- */
-clientSchema.statics.isRutTaken = async function (rut, excludeId) {
-    const client = await this.findOne( { rut, _id: { $ne: excludeId } } )
-
-    return !!client
-}
-
-/**
- * Format rut before save
- */
-clientSchema.pre('save', async function (next) {
-    const client = this
-    client.rut = formatRut(client.rut, { dots: false } )
-
-    next()
-} )
 
 /**
  * Remove in cascade.
