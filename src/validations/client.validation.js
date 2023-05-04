@@ -5,11 +5,11 @@ const createClient = {
     body: Joi.object().keys( {
         name      : Joi.string().required(),
         last_name : Joi.string().required(),
-        dni       : Joi.string(),
-        birthday  : Joi.string(),
-        address   : Joi.string(),
-        phone     : Joi.string(),
-        email     : Joi.string(),
+        dni       : Joi.string().allow(null, ''),
+        birthday  : Joi.string().allow(null, ''),
+        address   : Joi.string().allow(null, ''),
+        phone     : Joi.string().allow(null, ''),
+        email     : Joi.string().allow(null, ''),
     } ).unknown(true),
 }
 
@@ -35,11 +35,11 @@ const updateClient = {
     body: Joi.object().keys( {
         name      : Joi.string().required(),
         last_name : Joi.string().required(),
-        dni       : Joi.string(),
-        birthday  : Joi.string(),
-        address   : Joi.string(),
-        phone     : Joi.string(),
-        email     : Joi.string(),
+        dni       : Joi.string().allow(null, ''),
+        birthday  : Joi.string().allow(null, ''),
+        address   : Joi.string().allow(null, ''),
+        phone     : Joi.string().allow(null, ''),
+        email     : Joi.string().allow(null, ''),
     } ).unknown(true),
 }
 
