@@ -21,28 +21,28 @@ const clientSchema = mongoose.Schema(
         },
         dni: {
             type     : String,
-            required : true,
+            required : false,
             trim     : true,
         },
         birthday: {
             type     : String,
-            required : true,
+            required : false,
             trim     : true,
         },
         address: {
             type      : String,
-            required  : true,
+            required  : false,
             trim      : true,
             uppercase : true,
         },
         phone: {
             type     : String,
-            required : true,
+            required : false,
             trim     : true,
         },
         email: {
             type      : String,
-            required  : true,
+            required  : false,
             trim      : true,
             uppercase : true,
             validate(value) {
